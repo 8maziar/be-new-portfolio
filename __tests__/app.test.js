@@ -17,14 +17,17 @@ describe("GET /api/topics", () => {
       .expect(200)
       .then(({ body }) => {
         const { topics } = body;
+        expect(topics).toHaveLength(3);
         topics.forEach((topic) => {
           expect(topic).toHaveProperty("slug", expect.any(String));
           expect(topic).toHaveProperty("description", expect.any(String));
         });
       });
   });
+});
 
-  test("404, wrong url address", () => {
+describe("GET /api/notcorrect", () => {
+  it("404, wrong url address", () => {
     return request(app).get("/api/notcorrect").expect(404);
   });
 });
