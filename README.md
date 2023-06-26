@@ -13,6 +13,7 @@ Portfolio Project
 3. Set up environment variables:
 - Create a `.env` file in the root directory of the project.
 - Add `PGDATABASE=nc_news_test` environment variables to the `.env.test` and `PGDATABASE=nc_news` to `.env.development` file.
+
 **Note**: Since the `.env` file is not included in the repository, you'll need to create it manually.
 
 ## .gitignore
