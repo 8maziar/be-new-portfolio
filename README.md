@@ -5,15 +5,14 @@ For instructions, please head over to [L2C NC News](https://l2c.northcoders.com/
 # Project Name
 
 ## Description
-[Portfolio Project]
+Portfolio Project
 
 ## Installation
 1. Clone the repository:
 2. Install dependencies:
 3. Set up environment variables:
 - Create a `.env` file in the root directory of the project.
-- Add the necessary environment variables to the `.env` file. [Provide instructions on which environment variables are required and their expected values.]
-
+- Add `PGDATABASE=nc_news_test` environment variables to the `.env.test` and `PGDATABASE=nc_news` to `.env.development` file.
 **Note**: Since the `.env` file is not included in the repository, you'll need to create it manually.
 
 ## .gitignore
