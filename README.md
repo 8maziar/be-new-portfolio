@@ -16,6 +16,5 @@ Portfolio Project
 
 **Note**: Since the `.env` file is not included in the repository, you'll need to create it manually.
 
-## .gitignore
 This project includes a `.gitignore` file, which specifies the files and directories that should not be tracked by Git. It is important to keep sensitive or environment-specific files out of version control. The `.gitignore` file ensures that the `.env` file, containing sensitive information, is not accidentally committed and shared publicly.
 
