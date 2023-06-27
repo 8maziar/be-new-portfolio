@@ -13,7 +13,7 @@ afterAll(() => {
 });
 
 describe("GET /api/topics", () => {
-  it("status 200, should return an array of topic objects, each of which should have the following properties:slug ,description", () => {
+  test("status 200, should return an array of topic objects, each of which should have the following properties:slug ,description", () => {
     return request(app)
       .get("/api/topics")
       .expect(200)
@@ -29,7 +29,7 @@ describe("GET /api/topics", () => {
 });
 
 describe("GET /api", () => {
-  it("status 200, should return an object describing all the available endpoints on your API", () => {
+  test("status 200, should return an object describing all the available endpoints on your API", () => {
     return request(app)
       .get("/api")
       .expect(200)
@@ -41,7 +41,7 @@ describe("GET /api", () => {
 });
 
 describe("GET /api/notcorrect", () => {
-  it("404, wrong url address", () => {
+  test("404, wrong url address", () => {
     return request(app)
       .get("/api/notcorrect")
       .expect(404)
