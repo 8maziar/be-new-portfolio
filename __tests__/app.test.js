@@ -3,7 +3,6 @@ const app = require("../app");
 const seed = require("../db/seeds/seed");
 const db = require("../db/connection");
 const { topicData, userData, articleData, commentData } = require("../db/data/test-data/index");
-const fs = require("fs/promises");
 const JSONEndpoints = require("../endpoints.json");
 
 beforeEach(() => seed({ topicData, userData, articleData, commentData }));
@@ -24,6 +23,26 @@ describe("GET /api/topics", () => {
           expect(topic).toHaveProperty("slug", expect.any(String));
           expect(topic).toHaveProperty("description", expect.any(String));
         });
+      });
+  });
+});
+
+describe("GET /api/articles/:article_id", () => {
+  test("status 200, should return an article object, which should have the following properties: author ,title ,article_id ,body ,topic ,created_at ,votes ,article_img_url", () => {
+    return request(app)
+      .get("/api/articles/2")
+      .expect(200)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(article.article_id).toBe(2);
+      });
+  });
+  test("status 404, should return obj with message of not found", () => {
+    return request(app)
+      .get("/api/articles/442")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found");
       });
   });
 });
