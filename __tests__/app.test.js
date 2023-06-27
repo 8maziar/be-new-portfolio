@@ -45,6 +45,14 @@ describe("GET /api/articles/:article_id", () => {
         expect(body.msg).toBe("Not Found");
       });
   });
+  test("status 400, should return obj with message of bad request", () => {
+    return request(app)
+      .get("/api/articles/ten")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
 });
 
 describe("GET /api", () => {
