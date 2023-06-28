@@ -47,7 +47,7 @@ describe("GET /api/articles/:article_id", () => {
   });
   test("status 404, should return obj with message of not found", () => {
     return request(app)
-      .get("/api/articles/442")
+      .get("/api/articles/9999")
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe("Not Found");
@@ -64,7 +64,7 @@ describe("GET /api/articles/:article_id", () => {
 });
 
 describe("GET /api/articles", () => {
-  test("status 200, should return array of the articles which every object should have the following properties: author ,title ,article_id ,topic ,created_at ,votes ,article_img_url, comment_counts", () => {
+  test("status 200, should return should return array of the articles", () => {
     return request(app)
       .get("/api/articles")
       .expect(200)
@@ -83,6 +83,43 @@ describe("GET /api/articles", () => {
           expect(article).toHaveProperty("article_img_url", expect.any(String));
           expect(article).toHaveProperty("comment_count", expect.any(Number));
         });
+      });
+  });
+});
+
+describe("GET /api/articles/:article_id/comments", () => {
+  test("status 200, should return array of comments for an article", () => {
+    return request(app)
+      .get("/api/articles/1/comments")
+      .expect(200)
+      .then(({ body }) => {
+        const { comments } = body;
+        expect(comments).toHaveLength(11);
+        expect(comments[0].created_at).toBe("2020-11-03T21:00:00.000Z");
+        comments.forEach((comment) => {
+          expect(comment).toHaveProperty("comment_id", expect.any(Number));
+          expect(comment).toHaveProperty("votes", expect.any(Number));
+          expect(comment).toHaveProperty("created_at", expect.any(String));
+          expect(comment).toHaveProperty("author", expect.any(String));
+          expect(comment).toHaveProperty("body", expect.any(String));
+          expect(comment).toHaveProperty("article_id", expect.any(Number));
+        });
+      });
+  });
+  test("status 404, should return obj with message of not found", () => {
+    return request(app)
+      .get("/api/articles/9999/comments")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found");
+      });
+  });
+  test("status 400, should return obj with message of bad request", () => {
+    return request(app)
+      .get("/api/articles/ten/comments")
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
       });
   });
 });
