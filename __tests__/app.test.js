@@ -133,6 +133,45 @@ describe("GET /api/articles/:article_id/comments", () => {
   });
 });
 
+describe("POST /api/articles/:article_id/comments", () => {
+  test("status 201, should insert one comment according to article_id", () => {
+    const newComment = { username: "rogersop", body: "dolor. Consequatur quasi itaque culpa. Tempora ut autem est ad est" };
+    return request(app)
+      .post("/api/articles/2/comments")
+      .send(newComment)
+      .expect(201)
+      .then(({ body }) => {
+        const { comment } = body;
+        expect(comment).toHaveProperty("comment_id", expect.any(Number));
+        expect(comment).toHaveProperty("votes", expect.any(Number));
+        expect(comment).toHaveProperty("created_at", expect.any(String));
+        expect(comment).toHaveProperty("author", expect.any(String));
+        expect(comment).toHaveProperty("body", expect.any(String));
+        expect(comment).toHaveProperty("article_id", expect.any(Number));
+      });
+  });
+  test("status 404, should return obj with message of not found", () => {
+    const newComment = { username: "grumpy19", body: "dolor. Consequatur quasi itaque culpa. Tempora ut autem est ad est" };
+    return request(app)
+      .post("/api/articles/9999/comments")
+      .send(newComment)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found");
+      });
+  });
+  test("status 400, should return obj with message of bad request", () => {
+    const newComment = { username: "grumpy19", body: "dolor. Consequatur quasi itaque culpa. Tempora ut autem est ad est" };
+    return request(app)
+      .post("/api/articles/9999/comments")
+      .send(newComment)
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found");
+      });
+  });
+});
+
 describe("GET /api", () => {
   test("status 200, should return an object describing all the available endpoints on your API", () => {
     return request(app)
