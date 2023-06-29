@@ -106,6 +106,15 @@ describe("GET /api/articles/:article_id/comments", () => {
         });
       });
   });
+  test("status 200, should return an empty array when there is an article without any comments", () => {
+    return request(app)
+      .get("/api/articles/2/comments")
+      .expect(200)
+      .then(({ body }) => {
+        const { comments } = body;
+        expect(comments).toEqual([]);
+      });
+  });
   test("status 404, should return obj with message of not found", () => {
     return request(app)
       .get("/api/articles/9999/comments")
