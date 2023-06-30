@@ -134,10 +134,10 @@ describe("GET /api/articles/:article_id/comments", () => {
 });
 
 describe("POST /api/articles/:article_id/comments", () => {
+  const newComment = { username: "butter_bridge", body: "dolor. Consequatur quasi itaque culpa. Tempora ut autem est ad est" };
   test("status 201, should insert one comment according to article_id", () => {
-    const newComment = { username: "rogersop", body: "dolor. Consequatur quasi itaque culpa. Tempora ut autem est ad est" };
     return request(app)
-      .post("/api/articles/2/comments")
+      .post("/api/articles/1/comments")
       .send(newComment)
       .expect(201)
       .then(({ body }) => {
@@ -150,8 +150,7 @@ describe("POST /api/articles/:article_id/comments", () => {
         expect(comment).toHaveProperty("article_id", expect.any(Number));
       });
   });
-  test("status 404, should return obj with message of not found", () => {
-    const newComment = { username: "grumpy19", body: "dolor. Consequatur quasi itaque culpa. Tempora ut autem est ad est" };
+  test("status 404, should return obj with message of id is not found", () => {
     return request(app)
       .post("/api/articles/9999/comments")
       .send(newComment)
@@ -160,18 +159,26 @@ describe("POST /api/articles/:article_id/comments", () => {
         expect(body.msg).toBe("Not Found");
       });
   });
-  test("status 400, should return obj with message of bad request", () => {
-    const newComment = { username: "grumpy19", body: "dolor. Consequatur quasi itaque culpa. Tempora ut autem est ad est" };
+  test("status 400: invalid id ", () => {
     return request(app)
-      .post("/api/articles/9999/comments")
+      .post("/api/articles/banana/comments")
       .send(newComment)
-      .expect(404)
+      .expect(400)
       .then(({ body }) => {
-        expect(body.msg).toBe("Not Found");
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+
+  test("400: returns if any of the required properties for posting is missing", () => {
+    return request(app)
+      .post("/api/articles/1/comments")
+      .send({ body: "dolor. Consequatur quasi itaque culpa. Tempora ut autem est ad est" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
       });
   });
 });
-
 describe("GET /api", () => {
   test("status 200, should return an object describing all the available endpoints on your API", () => {
     return request(app)
