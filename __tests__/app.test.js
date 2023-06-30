@@ -178,7 +178,18 @@ describe("POST /api/articles/:article_id/comments", () => {
         expect(body.msg).toBe("Bad Request");
       });
   });
+
+  test("status 404, should return username not found", () => {
+    return request(app)
+      .post("/api/articles/9999/comments")
+      .send({ username: "maziar", body: "dolor. Consequatur quasi itaque culpa. Tempora ut autem est ad est" })
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found");
+      });
+  });
 });
+
 describe("GET /api", () => {
   test("status 200, should return an object describing all the available endpoints on your API", () => {
     return request(app)
