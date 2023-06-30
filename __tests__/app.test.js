@@ -179,6 +179,57 @@ describe("POST /api/articles/:article_id/comments", () => {
       });
   });
 });
+
+describe.only("PATCH /api/articles/:article_id", () => {
+  test("200: Should return article with updated vote count when passed a positive number", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: 4 })
+      .expect(201)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(article.votes).toBe(20);
+      });
+  });
+  test("200: Should return article with updated vote count when passed a negative number", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: -80 })
+      .expect(201)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(article.votes).toBe(-64);
+      });
+  });
+  test("404: valid but non-existent id", () => {
+    return request(app)
+      .patch("/api/articles/25")
+      .send({ inc_votes: -150 })
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Not Found");
+      });
+  });
+  test("400: invalid id (NAN)", () => {
+    return request(app)
+      .patch("/api/articles/banana")
+      .send({ inc_votes: 52 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+  test("400: invalid input passed (NAN)", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: "banana" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+});
+
 describe("GET /api", () => {
   test("status 200, should return an object describing all the available endpoints on your API", () => {
     return request(app)
