@@ -182,6 +182,7 @@ describe("POST /api/articles/:article_id/comments", () => {
 
 describe("PATCH /api/articles/:article_id", () => {
   test("200: Should return article with updated vote count given a positive vote num", () => {
+    
     return request(app)
       .patch("/api/articles/1")
       .send({ inc_votes: 4 })
