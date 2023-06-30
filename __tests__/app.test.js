@@ -178,14 +178,55 @@ describe("POST /api/articles/:article_id/comments", () => {
         expect(body.msg).toBe("Bad Request");
       });
   });
+});
 
-  test("status 404, should return username not found", () => {
+describe("PATCH /api/articles/:article_id", () => {
+  test("200: Should return article with updated vote count given a positive vote num", () => {
     return request(app)
-      .post("/api/articles/9999/comments")
-      .send({ username: "maziar", body: "dolor. Consequatur quasi itaque culpa. Tempora ut autem est ad est" })
+      .patch("/api/articles/1")
+      .send({ inc_votes: 4 })
+      .expect(201)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(article.votes).toBe(20);
+      });
+  });
+  test("200: Should return article with updated vote count given a negative number", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: -80 })
+      .expect(201)
+      .then(({ body }) => {
+        const { article } = body;
+        expect(article.votes).toBe(-64);
+      });
+  });
+
+  test("404: id not found", () => {
+    return request(app)
+      .patch("/api/articles/25")
+      .send({ inc_votes: -150 })
       .expect(404)
       .then(({ body }) => {
         expect(body.msg).toBe("Not Found");
+      });
+  });
+  test("400: invalid id type err", () => {
+    return request(app)
+      .patch("/api/articles/banana")
+      .send({ inc_votes: 52 })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
+      });
+  });
+  test("400: invalid data instead of num votes", () => {
+    return request(app)
+      .patch("/api/articles/1")
+      .send({ inc_votes: "banana" })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toBe("Bad Request");
       });
   });
 });
