@@ -5,5 +5,6 @@ const { getAllArticles } = require("./getAllArticles.controller");
 const { getCommentsByArticleId } = require("./getCommentsByArticleId.controller");
 const { postComment } = require("./postComment.controller");
 const { updateVoteById } = require("./updateVoteById.controller");
+const { deleteComment } = require("./deleteComment.controller");
 
-module.exports = { getTopics, getEndpoints, getArticles, getAllArticles, getCommentsByArticleId, postComment, updateVoteById };
+module.exports = { getTopics, getEndpoints, getArticles, getAllArticles, getCommentsByArticleId, postComment, updateVoteById , deleteComment};
