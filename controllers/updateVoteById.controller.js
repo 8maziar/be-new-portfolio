@@ -10,7 +10,6 @@ exports.updateVoteById = (req, res, next) => {
   Promise.all(promises)
     .then((resolved) => {
       const article = resolved[1];
-      console.log('article:', article)
       res.status(201).send({article});
     })
     .catch(next);

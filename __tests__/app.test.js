@@ -180,8 +180,8 @@ describe("POST /api/articles/:article_id/comments", () => {
   });
 });
 
-describe.only("PATCH /api/articles/:article_id", () => {
-  test("200: Should return article with updated vote count when passed a positive number", () => {
+describe("PATCH /api/articles/:article_id", () => {
+  test("200: Should return article with updated vote count given a positive vote num", () => {
     return request(app)
       .patch("/api/articles/1")
       .send({ inc_votes: 4 })
@@ -191,7 +191,7 @@ describe.only("PATCH /api/articles/:article_id", () => {
         expect(article.votes).toBe(20);
       });
   });
-  test("200: Should return article with updated vote count when passed a negative number", () => {
+  test("200: Should return article with updated vote count given a negative number", () => {
     return request(app)
       .patch("/api/articles/1")
       .send({ inc_votes: -80 })
@@ -201,7 +201,8 @@ describe.only("PATCH /api/articles/:article_id", () => {
         expect(article.votes).toBe(-64);
       });
   });
-  test("404: valid but non-existent id", () => {
+  
+  test("404: id not found", () => {
     return request(app)
       .patch("/api/articles/25")
       .send({ inc_votes: -150 })
@@ -210,7 +211,7 @@ describe.only("PATCH /api/articles/:article_id", () => {
         expect(body.msg).toBe("Not Found");
       });
   });
-  test("400: invalid id (NAN)", () => {
+  test("400: invalid id type err", () => {
     return request(app)
       .patch("/api/articles/banana")
       .send({ inc_votes: 52 })
@@ -219,7 +220,7 @@ describe.only("PATCH /api/articles/:article_id", () => {
         expect(body.msg).toBe("Bad Request");
       });
   });
-  test("400: invalid input passed (NAN)", () => {
+  test("400: invalid data instead of num votes", () => {
     return request(app)
       .patch("/api/articles/1")
       .send({ inc_votes: "banana" })
